@@ -23,10 +23,19 @@ ROAST = (
 )
 
 
+# Gate (RULES.txt): entry.txt must be UTF-8 text of 1-200 characters.
+MAX_CHARS = 200
+
+
 def main() -> None:
+    if not ROAST or len(ROAST) > MAX_CHARS:
+        raise SystemExit("entry line fails the 1-200 char gate")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(ROAST)
+    with open("/output/entry.txt", encoding="utf-8") as f:
+        if f.read() != ROAST:
+            raise SystemExit("entry.txt differs from the roast line")
     print(f"Wrote {len(ROAST)} characters to /output/entry.txt")
 
 
